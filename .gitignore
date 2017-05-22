@@ -41,3 +41,4 @@ flow-typed/
 # Built files
 /index.js
 /test.js
+/serializer.js

@@ -92,6 +92,6 @@
     "lint": "eslint src/*.js",
     "static": "flow",
     "validate": "yarn lint && yarn static && yarn coverage && yarn build && yarn test && yarn clear",
-    "semantic-release": "yarn build && semantic-release pre && yarn publish && semantic-release post && yarn clear"
+    "semantic-release": "yarn build && semantic-release pre && npm publish && semantic-release post && yarn clear"
   }
 }
