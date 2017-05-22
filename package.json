@@ -1,5 +1,5 @@
 {
-  "name": "react-test-renderer-microdata",
+  "name": "test-microdata",
   "version": "0.0.0-development",
   "description": "Extracts objects from the result of the react-test-renderer using itemscope attributes",
   "main": "index.js",
