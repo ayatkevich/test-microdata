@@ -1,0 +1,97 @@
+{
+  "name": "react-test-renderer-microdata",
+  "version": "0.0.0-development",
+  "description": "Extracts objects from the result of the react-test-renderer using itemscope attributes",
+  "main": "index.js",
+  "repository": "https://github.com/ayatkevich/designpad.git",
+  "author": "Alexander Yatkevich <ayatkevich@gmail.com>",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-core": "^6.24.1",
+    "babel-eslint": "^7.2.3",
+    "babel-jest": "^20.0.3",
+    "babel-plugin-transform-flow-strip-types": "^6.22.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-0": "^6.24.1",
+    "enzyme": "^2.8.2",
+    "enzyme-to-json": "^1.5.1",
+    "eslint": "^3.19.0",
+    "eslint-plugin-jest": "^20.0.3",
+    "eslint-plugin-react": "^7.0.1",
+    "flow-bin": "^0.46.0",
+    "jest": "^20.0.3",
+    "lint-staged": "^3.4.2",
+    "prettier": "^1.3.1",
+    "react": "^15.5.4",
+    "react-dom": "^15.5.4",
+    "react-test-renderer": "^15.5.4",
+    "semantic-release": "^6.3.6"
+  },
+  "lint-staged": {
+    "*.js": [
+      "prettier --single-quote --trailing-comma --no-bracket-spacing --write",
+      "git add"
+    ]
+  },
+  "babel": {
+    "presets": [
+      "es2015",
+      "stage-0",
+      "react"
+    ],
+    "plugins": [
+      "transform-flow-strip-types"
+    ]
+  },
+  "eslintConfig": {
+    "parser": "babel-eslint",
+    "parserOptions": {
+      "ecmaFeatures": {
+        "jsx": true
+      }
+    },
+    "plugins": [
+      "jest",
+      "react"
+    ],
+    "extends": [
+      "eslint:recommended",
+      "plugin:jest/recommended"
+    ],
+    "env": {
+      "es6": true,
+      "node": true,
+      "browser": true,
+      "jest/globals": true
+    },
+    "rules": {
+      "react/jsx-uses-react": 1,
+      "react/jsx-uses-vars": [
+        2
+      ]
+    }
+  },
+  "jest": {
+    "coverageThreshold": {
+      "global": {
+        "branches": 100,
+        "functions": 100,
+        "lines": 100,
+        "statements": 100
+      }
+    }
+  },
+  "scripts": {
+    "build": "babel src --out-dir .",
+    "clear": "rm index.js test.js serializer.js",
+    "test": "jest",
+    "coverage": "jest --coverage",
+    "lint": "eslint src/*.js",
+    "static": "flow",
+    "validate": "yarn lint && yarn static && yarn coverage && yarn build && yarn test && yarn clear",
+    "semantic-release": "yarn build && semantic-release pre && yarn publish && semantic-release post && yarn clear"
+  }
+}
