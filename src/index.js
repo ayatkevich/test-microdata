@@ -3,7 +3,7 @@
 type Element =
   | {
       type: string,
-      props: {[string]: ?any},
+      props: ?{[string]: ?any},
       children: ?(Element[]),
     }
   | string;
@@ -13,9 +13,9 @@ type IsProp = ?string;
 type Scope = {itemScope: IsScope};
 type Prop = {itemProp: IsProp};
 
-const lookup = (prop: string) => <T>(props: {[string]: ?T}): ?T => {
+const lookup = (prop: string) => <T>(props: ?{[string]: ?T}): ?T => {
   for (const name of [prop, prop.toLowerCase()]) {
-    const value = props[name];
+    const value = (props || {})[name];
     if (typeof value === 'undefined') {
       continue;
     }
@@ -23,8 +23,8 @@ const lookup = (prop: string) => <T>(props: {[string]: ?T}): ?T => {
   }
 };
 
-const lookupScope: (_: Scope) => IsScope = lookup('itemScope');
-const lookupProp: (_: Prop) => IsProp = lookup('itemProp');
+const lookupScope: (_: ?Scope | {}) => IsScope = lookup('itemScope');
+const lookupProp: (_: ?Prop | {}) => IsProp = lookup('itemProp');
 
 const traverseScalars = (elements: ?(Element[]), acc: any[]): any[] => {
   for (const element of elements || []) {
@@ -42,23 +42,24 @@ const traverseProps = (elements: ?(Element[]), acc: {}): {} => {
     if (typeof element === 'string') {
       continue;
     }
-    const prop = lookupProp(element.props);
+    const props = element.props || {};
+    const prop = lookupProp(props);
     if (prop) {
       let value;
-      if (lookupScope(element.props)) {
+      if (lookupScope(props)) {
         value = traverseProps(element.children, {});
       } else {
         switch (element.type) {
           case 'link':
-            value = element.props.href;
+            value = props.href;
             break;
 
           case 'meta':
-            value = element.props.content;
+            value = props.content;
             break;
 
           case 'iframe':
-            value = element.props.src;
+            value = props.src;
             break;
 
           default:

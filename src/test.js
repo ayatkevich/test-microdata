@@ -239,3 +239,42 @@ test('enzyme shallow and mount rendering', () => {
   expect(enzymeRender(shallow)(el)).toEqual({component: 'not mounted'});
   expect(enzymeRender(mount)(el)).toEqual({component: 'mounted'});
 });
+
+const Table = props => <table {...props} />;
+const TableBody = props => <tbody {...props} />;
+const TableRow = props => <tr {...props} />;
+const TableColumn = props => <td {...props} />;
+
+test('components that pass props down to the primitives', () => {
+  expect(
+    enzymeRender(mount)(
+      <Table>
+        <TableBody>
+          <TableRow itemScope>
+            <TableColumn itemProp="a">1</TableColumn>
+            <TableColumn itemProp="b">2</TableColumn>
+            <TableColumn itemProp="c">3</TableColumn>
+            <TableColumn itemProp="d">4</TableColumn>
+          </TableRow>
+          <TableRow itemScope>
+            <TableColumn itemProp="e">5</TableColumn>
+            <TableColumn itemProp="f">6</TableColumn>
+            <TableColumn itemProp="g">7</TableColumn>
+            <TableColumn itemProp="h">8</TableColumn>
+          </TableRow>
+        </TableBody>
+      </Table>,
+    ),
+  ).toEqual([
+    {a: '1', b: '2', c: '3', d: '4'},
+    {e: '5', f: '6', g: '7', h: '8'},
+  ]);
+});
+
+test('props are undefined', () => {
+  const noProps = {type: 'div', props: undefined, children: []};
+  expect(microdata(noProps)).toEqual([]);
+  expect(
+    microdata({type: 'div', props: {itemScope: true}, children: [noProps]}),
+  ).toEqual({});
+});
